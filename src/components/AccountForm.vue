@@ -5,21 +5,26 @@
       <el-button
           type="primary"
           class="add-button"
+          @click="addAccount"
       >
         +
       </el-button>
     </div>
     <div class="accounts-list">
       <div
+          v-for="account in accounts"
+          :key="account.id"
           class="account-item">
-        <div class="account-row">
 
+        <div class="account-row">
           <div class="field-group">
             <label class="field-label">Метка</label>
             <el-input
                 placeholder="Метки через ;"
                 :maxlength="50"
                 show-word-limit
+                v-model="account.label"
+                :class="{ 'error': !isLabelValid(account.label) }"
             />
             <div class="field-hint">макс. 50 символов</div>
           </div>
@@ -28,6 +33,8 @@
             <label class="field-label">Тип записи *</label>
             <el-select
                 placeholder="Тип записи"
+                v-model="account.type"
+                :class="{ 'error': !isTypeValid(account.type) }"
             >
               <el-option label="LDAP" value="LDAP" />
               <el-option label="Локальная" value="Локальная" />
@@ -40,17 +47,26 @@
                 placeholder="Логин"
                 :maxlength="100"
                 show-word-limit
+                v-model="account.login"
+                :class="{ 'error': !isLoginValid(account.login) }"
             />
           </div>
 
-          <div class="field-group">
+          <div class="field-group" v-if="account.type === 'Локальная'">
             <label class="field-label">Пароль *</label>
             <el-input
                 type="password"
                 placeholder="Пароль"
                 :maxlength="100"
                 show-word-limit
+                v-model="account.password"
+                :class="{ 'error': !isPasswordValid(account) }"
             />
+          </div>
+
+          <div class="field-group" v-else>
+            <label class="field-label">&nbsp;</label>
+            <div class="empty-field"></div>
           </div>
 
           <div class="field-group delete-group">
@@ -68,7 +84,34 @@
   </div>
 </template>
 <script setup lang="ts">
+import { computed, onMounted } from 'vue';
 import { Delete } from '@element-plus/icons-vue';
+import {type Account, useAccountsStore} from "../store/accounts.ts";
+
+const accountsStore = useAccountsStore();
+const accounts = computed(() => accountsStore.accounts);
+
+const isLabelValid = (label: string): boolean => {
+  return label.length <= 50;
+};
+const isTypeValid = (type: string): boolean => {
+  return ['LDAP', 'Локальная'].includes(type);
+};
+
+const isLoginValid = (login: string): boolean => {
+  return login.trim().length > 0 && login.length <= 100;
+};
+
+const isPasswordValid = (account: Account): boolean => {
+  if (account.type === 'LDAP') return true;
+  return account.password !== null && account.password.trim().length > 0 && account.password.length <= 100;
+};
+const addAccount = () => {
+  accountsStore.addAccount();
+};
+onMounted(() => {
+  accountsStore.loadFromLocalStorage();
+});
 </script>
 
 <style scoped>

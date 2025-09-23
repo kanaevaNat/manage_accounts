@@ -8,7 +8,7 @@
 import AccountForm from './components/AccountForm.vue'
 </script>
 
-<style scoped>
+<style>
 * {
   margin: 0;
   padding: 0;
@@ -16,7 +16,7 @@ import AccountForm from './components/AccountForm.vue'
 }
 
 body {
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Arial, sans-serif;
   background-color: #f5f7fa;
 }
 
