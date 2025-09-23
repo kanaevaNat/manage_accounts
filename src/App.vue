@@ -9,5 +9,19 @@ import AccountForm from './components/AccountForm.vue'
 </script>
 
 <style scoped>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  background-color: #f5f7fa;
+}
+
+#app {
+  min-height: 100vh;
+  padding: 20px;
+}
 </style>
