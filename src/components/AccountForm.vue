@@ -10,6 +10,14 @@
         +
       </el-button>
     </div>
+    <div class="hint-section">
+      <el-tooltip
+          effect="dark"
+          placement="right">
+        <el-icon class="hint-icon"><QuestionFilled /></el-icon>
+      </el-tooltip>
+      <span class="hint-text">Для указания нескольких меток для одной пары логин/пароль используйте разделитель ;</span>
+    </div>
     <div class="accounts-list">
       <div
           v-for="account in accounts"
@@ -90,7 +98,7 @@
 </template>
 <script setup lang="ts">
 import { computed, onMounted } from 'vue';
-import { Delete } from '@element-plus/icons-vue';
+import { Delete, QuestionFilled} from '@element-plus/icons-vue';
 import {type Account, useAccountsStore} from "../store/accounts.ts";
 
 const accountsStore = useAccountsStore();
@@ -216,5 +224,79 @@ onMounted(() => {
   margin-right: auto;
   height: 40px;
   margin-left: 40px;
+}
+.empty-field {
+  height: 30px;
+  background-color: #f5f7fa;
+  border-radius: 4px;
+  border: 1px dashed #dcdfe6;
+}
+.hint-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #606266;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+.hint-icon {
+  color: #409eff;
+  cursor: help;
+  font-size: 16px;
+}
+.hint-text {
+  line-height: 1.4;
+}
+@media (max-width: 1200px) {
+  .account-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .account-form {
+    max-width: 100%;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .account-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .form-header h2 {
+    font-size: 20px;
+  }
+
+  .delete-group {
+    align-items: flex-start;
+  }
+
+  .hint-text {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .account-item {
+    padding: 16px;
+  }
+
+  .field-group {
+    min-height: 70px;
+  }
+
+  .hint-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
 }
 </style>

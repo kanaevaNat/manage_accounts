@@ -1,5 +1,50 @@
-# Vue 3 + TypeScript + Vite
+# Manage_accounts
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Реализация веб приложения с формой управления учетными записями
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+Стек:
+1. Vue 3 + Composition API
+2. TypeScript
+3. Pinia
+4. Element Plus
+5. Vite
+
+# Демонстрация
+
+1. Метка сохраняется в формате массива, где поле text равно одному элементу метки - ({ text: элемент метки })
+2. Поле password при выборе LDAP недоступно и принимает значение null
+
+![demo example](/screenshots/demo.png?raw=true "Demo example")
+
+# How to run
+
+### Install requirements
+
+1. Node.js (версия 18.x или выше)
+2. npm или yarn
+
+### Installation and Development
+
+1. Клонируйте репозиторий:
+
+```git clone https://github.com/kanaevaNat/manage_accounts.git```
+
+2. Перейдите в папку проекта:
+
+```cd organization_manager```
+
+3. Установите зависимости:
+
+```
+npm install
+# или
+yarn install
+```
+
+4. Запустите локальный сервер:
+
+```
+npm run dev
+# или
+yarn dev
+```
