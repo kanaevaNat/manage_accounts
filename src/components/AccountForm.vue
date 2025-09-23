@@ -25,6 +25,7 @@
                 show-word-limit
                 v-model="account.label"
                 :class="{ 'error': !isLabelValid(account.label) }"
+                @blur="updateAccount(account)"
             />
             <div class="field-hint">макс. 50 символов</div>
           </div>
@@ -35,6 +36,7 @@
                 placeholder="Тип записи"
                 v-model="account.type"
                 :class="{ 'error': !isTypeValid(account.type) }"
+                @change="handleTypeChange(account)"
             >
               <el-option label="LDAP" value="LDAP" />
               <el-option label="Локальная" value="Локальная" />
@@ -49,6 +51,7 @@
                 show-word-limit
                 v-model="account.login"
                 :class="{ 'error': !isLoginValid(account.login) }"
+                @blur="updateAccount(account)"
             />
           </div>
 
@@ -61,6 +64,7 @@
                 show-word-limit
                 v-model="account.password"
                 :class="{ 'error': !isPasswordValid(account) }"
+                @blur="updateAccount(account)"
             />
           </div>
 
@@ -75,6 +79,7 @@
                 type="danger"
                 class="delete-button"
                 :icon="Delete"
+                @click="deleteAccount(account.id)"
             >
             </el-button>
           </div>
@@ -94,6 +99,7 @@ const accounts = computed(() => accountsStore.accounts);
 const isLabelValid = (label: string): boolean => {
   return label.length <= 50;
 };
+
 const isTypeValid = (type: string): boolean => {
   return ['LDAP', 'Локальная'].includes(type);
 };
@@ -106,9 +112,37 @@ const isPasswordValid = (account: Account): boolean => {
   if (account.type === 'LDAP') return true;
   return account.password !== null && account.password.trim().length > 0 && account.password.length <= 100;
 };
+
 const addAccount = () => {
   accountsStore.addAccount();
 };
+
+const isAccountValid = (account: Account): boolean => {
+  return isLabelValid(account.label) &&
+      isTypeValid(account.type) &&
+      isLoginValid(account.login) &&
+      isPasswordValid(account);
+};
+
+const updateAccount = (account: Account) => {
+  if (isAccountValid(account)) {
+    accountsStore.updateAccount(account);
+  }
+};
+
+const handleTypeChange = (account: Account) => {
+  if (account.type === 'LDAP') {
+    account.password = null;
+  } else if (account.type === 'Локальная' && account.password === null) {
+    account.password = '';
+  }
+  updateAccount(account);
+};
+
+const deleteAccount = (accountId: string) => {
+  accountsStore.deleteAccount(accountId);
+};
+
 onMounted(() => {
   accountsStore.loadFromLocalStorage();
 });
@@ -183,5 +217,4 @@ onMounted(() => {
   height: 40px;
   margin-left: 40px;
 }
-
 </style>
