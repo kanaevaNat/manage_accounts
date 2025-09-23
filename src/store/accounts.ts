@@ -35,6 +35,30 @@ export const useAccountsStore = defineStore('accounts', {
             this.accounts.push(newAccount);
             this.saveToLocalStorage();
         },
+        updateAccount(updatedAccount: Account) {
+            const index = this.accounts.findIndex(acc => acc.id === updatedAccount.id);
+            if (index !== -1) {
+                const labels = this.parseLabels(updatedAccount.label);
+                this.accounts[index] = {
+                    ...updatedAccount,
+                    labels,
+                };
+                this.saveToLocalStorage();
+            }
+        },
+        deleteAccount(accountId: string) {
+            this.accounts = this.accounts.filter(acc => acc.id !== accountId);
+            this.saveToLocalStorage();
+        },
+        parseLabels(labelString: string): AccountLabel[] {
+            if (!labelString.trim()) return [];
+
+            return labelString
+                .split(';')
+                .map(label => label.trim())
+                .filter(label => label.length > 0)
+                .map(label => ({ text: label }));
+        },
         loadFromLocalStorage() {
             if (typeof window !== 'undefined') {
                 const saved = localStorage.getItem('accounts');
